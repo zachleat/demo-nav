@@ -47,6 +47,15 @@
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
 	}
+	/* The preview now sits directly under the section head, so it does not
+	   need the spacing a mid-section heading wants. */
+	#builder h2 + .sub {
+		margin-block-start: 0;
+	}
+	/* Separate the preview from the form below it. */
+	#preview {
+		margin-block-end: 1.5rem;
+	}
 	.example {
 		border: 1px solid light-dark(#d2ded2, #2f3a2f);
 		border-radius: 0.5rem;
@@ -162,11 +171,9 @@
 		text-transform: none;
 		letter-spacing: 0;
 	}
-	.section-head {
-		display: flex;
-		align-items: baseline;
-		justify-content: space-between;
-		gap: 1rem;
+	.form-actions {
+		flex-direction: row;
+		justify-content: flex-end;
 	}
 	.btn {
 		border: 1px solid light-dark(#d2ded2, #2f3a2f);
@@ -229,10 +236,10 @@
 
 <main id="demo">
 	<section id="builder">
-		<div class="section-head">
-			<h2>Build your nav</h2>
-			<button class="btn" type="button" id="reset">Reset</button>
-		</div>
+		<h2>Build your nav</h2>
+		<h3 class="sub">Preview</h3>
+		<div class="example" id="preview"></div>
+
 		<form id="nav-form">
 			<div class="field">
 				<label for="f-profile">Profile</label>
@@ -304,10 +311,10 @@
 				<label class="check"><input type="checkbox" id="f-skip" name="skip" checked> Skip link</label>
 				<label class="check"><input type="checkbox" id="f-sticky" name="sticky" checked> Sticky <span class="hint">on tall viewports</span></label>
 			</div>
+			<div class="field field-wide form-actions">
+				<button class="btn" type="button" id="reset">Reset</button>
+			</div>
 		</form>
-
-		<h3 class="sub">Preview</h3>
-		<div class="example" id="preview"></div>
 
 		<div class="snippets">
 			<div class="snippet">

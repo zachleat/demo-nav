@@ -35,6 +35,15 @@
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
 	}
+	/* The preview now sits directly under the section head, so it does not
+	   need the spacing a mid-section heading wants. */
+	#builder h2 + .sub {
+		margin-block-start: 0;
+	}
+	/* Separate the preview from the form below it. */
+	#preview {
+		margin-block-end: 1.5rem;
+	}
 	.example {
 		border: 1px solid light-dark(#d2ded2, #2f3a2f);
 		border-radius: 0.5rem;
@@ -150,11 +159,9 @@
 		text-transform: none;
 		letter-spacing: 0;
 	}
-	.section-head {
-		display: flex;
-		align-items: baseline;
-		justify-content: space-between;
-		gap: 1rem;
+	.form-actions {
+		flex-direction: row;
+		justify-content: flex-end;
 	}
 	.btn {
 		border: 1px solid light-dark(#d2ded2, #2f3a2f);
