@@ -1,4 +1,4 @@
-# demo nav
+# Demo Navigation
 
 A shared header for demo pages: identity link, demo title and description, and
 links out to the demo, its source, npm, npmx and the blog post it came from.
