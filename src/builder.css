@@ -1,0 +1,194 @@
+*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
+	body {
+		margin: 0;
+		color-scheme: light dark;
+		background-color: light-dark(#fff, #121212);
+		color: light-dark(#222, #f2f2f2);
+		font-family: Lato, Numero, system-ui, sans-serif;
+		line-height: 1.4;
+	}
+	main {
+		max-width: 52rem;
+		margin: 0 auto;
+		padding: 2rem clamp(1rem, 3vw, 1.5rem) 6rem;
+	}
+	h2 {
+		margin-block: 3.5rem 0.75rem;
+		color: light-dark(#525252, #a9a9a9);
+		font-size: 0.8125rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+	}
+	main > section:first-child h2 {
+		margin-block-start: 0;
+	}
+	.sub {
+		margin-block: 1.5rem 0.5rem;
+		color: light-dark(#525252, #a9a9a9);
+		font-size: 0.75rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+	}
+	.example {
+		border: 1px solid light-dark(#d2ded2, #2f3a2f);
+		border-radius: 0.5rem;
+		overflow: hidden;
+	}
+	/* Matched on the element, not the class — ultra-minify renames .demo-nav,
+	   and a missed match here doubles up with the box's own border. */
+	.example > header {
+		border-block-end: 0;
+	}
+	.tinted {
+		background-color: light-dark(#e8f0e8, #223022);
+		background-image: repeating-linear-gradient(45deg, #0000, #0000 10px, light-dark(#00000008, #ffffff08) 10px 20px);
+	}
+
+	/* Builder form */
+	#nav-form {
+		display: grid;
+		gap: 0.75rem 1rem;
+		padding: 1rem;
+		border: 1px solid light-dark(#d2ded2, #2f3a2f);
+		border-radius: 0.5rem;
+		background-color: light-dark(rgba(0, 0, 0, 0.02), rgba(255, 255, 255, 0.03));
+	}
+	@media (min-width: 40em) {
+		#nav-form {
+			grid-template-columns: 1fr 1fr;
+		}
+		.field-wide {
+			grid-column: 1 / -1;
+		}
+	}
+	.field {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		min-width: 0;
+	}
+	.field label {
+		font-size: 0.8125rem;
+		font-weight: 700;
+	}
+	.hint {
+		font-weight: 400;
+		color: light-dark(#525252, #a9a9a9);
+	}
+	.field input,
+	.field select {
+		width: 100%;
+		padding: 0.4em 0.55em;
+		border: 1px solid light-dark(#d2ded2, #2f3a2f);
+		border-radius: 0.25em;
+		background-color: light-dark(#fff, #1b1b1b);
+		color: inherit;
+		font: inherit;
+		font-size: 0.875rem;
+	}
+	.field input:focus-visible,
+	.field select:focus-visible,
+	.check input:focus-visible {
+		outline: 2px solid #f525e9;
+		outline-offset: 2px;
+	}
+	.checkboxes {
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 0.25rem 1.5rem;
+	}
+	.check {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4em;
+		font-size: 0.875rem;
+		font-weight: 400;
+	}
+	.check input {
+		accent-color: #4caf50;
+		width: auto;
+	}
+
+	/* Output */
+	.snippets {
+		margin-block-start: 1.5rem;
+	}
+	.snippet {
+		min-width: 0;
+		border: 1px solid light-dark(#d2ded2, #2f3a2f);
+		border-radius: 0.5rem;
+		overflow: hidden;
+	}
+	.snippet-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 0.4rem 0.4rem 0.4rem 0.75rem;
+		background-color: light-dark(rgba(0, 0, 0, 0.04), rgba(255, 255, 255, 0.06));
+		border-block-end: 1px solid light-dark(#d2ded2, #2f3a2f);
+	}
+	.snippet-title {
+		margin: 0;
+		font-size: 0.75rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: light-dark(#525252, #a9a9a9);
+	}
+	.size {
+		margin-inline-start: 0.5em;
+		color: light-dark(#525252, #a9a9a9);
+		font-family: Consolas, Monaco, ui-monospace, monospace;
+		font-weight: 400;
+		text-transform: none;
+		letter-spacing: 0;
+	}
+	.section-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1rem;
+	}
+	.btn {
+		border: 1px solid light-dark(#d2ded2, #2f3a2f);
+		border-radius: 0.25em;
+		padding: 0.25em 0.7em;
+		background-color: light-dark(#fff, #1b1b1b);
+		color: inherit;
+		font: inherit;
+		font-size: 0.8125rem;
+		cursor: pointer;
+	}
+	.btn:hover {
+		border-color: #4caf50;
+		color: #4caf50;
+	}
+	.btn:focus-visible {
+		outline: 2px solid #f525e9;
+		outline-offset: 2px;
+	}
+	pre {
+		margin: 0;
+		padding: 0.75rem;
+		max-height: 28rem;
+		overflow: auto;
+		font-family: Consolas, Monaco, ui-monospace, monospace;
+		font-size: 0.75rem;
+		line-height: 1.5;
+		tab-size: 2;
+	}
+	.note {
+		margin-block-start: 2rem;
+		color: light-dark(#525252, #a9a9a9);
+		font-size: 0.875rem;
+	}
+	.note code {
+		font-family: Consolas, Monaco, ui-monospace, monospace;
+	}

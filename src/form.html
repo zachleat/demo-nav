@@ -1,0 +1,89 @@
+	<section id="builder">
+		<div class="section-head">
+			<h2>Build your nav</h2>
+			<button class="btn" type="button" id="reset">Reset</button>
+		</div>
+		<form id="nav-form">
+			<div class="field">
+				<label for="f-profile">Profile</label>
+				<select id="f-profile" name="profile">
+					<!--PROFILE_OPTIONS-->
+				</select>
+			</div>
+			<div class="field">
+				<label for="f-home-text">Home link text <span class="hint">{name} is the profile name</span></label>
+				<input type="text" id="f-home-text" name="homeText" value="{name} Demo" autocomplete="off">
+			</div>
+			<div class="field field-wide">
+				<label for="f-title">Title</label>
+				<input type="text" id="f-title" name="title" value="Fluid images" autocomplete="off">
+			</div>
+			<div class="field field-wide">
+				<label for="f-description">Description</label>
+				<input type="text" id="f-description" name="description" value="Responsive images without the art direction." autocomplete="off">
+			</div>
+			<div class="field">
+				<label for="f-heading">Title element</label>
+				<select id="f-heading" name="heading">
+					<option value="h1">h1 — the demo has no other heading</option>
+					<option value="h2">h2</option>
+					<option value="p">p — the demo has its own h1</option>
+				</select>
+			</div>
+			<div class="field">
+				<label for="f-source">Source repo URL</label>
+				<input type="url" id="f-source" name="source" value="https://github.com/zachleat/demo-repo" placeholder="https://github.com/zachleat/…" autocomplete="off" spellcheck="false">
+			</div>
+			<div class="field">
+				<label for="f-demo">Demo URL <span class="hint">don’t link to self!</span></label>
+				<input type="url" id="f-demo" name="demo" value="" placeholder="https://demo.zachleat.com/…" autocomplete="off" spellcheck="false">
+			</div>
+			<div class="field">
+				<label for="f-demo-label">Demo link text</label>
+				<input type="text" id="f-demo-label" name="demoLabel" value="" placeholder="Demo" autocomplete="off">
+			</div>
+			<div class="field">
+				<label for="f-npm">npm package <span class="hint">adds npm + npmx links</span></label>
+				<input type="text" id="f-npm" name="npm" value="" placeholder="package-name" autocomplete="off" spellcheck="false">
+			</div>
+			<div class="field">
+				<label for="f-post">Blog post URL</label>
+				<input type="url" id="f-post" name="post" value="" placeholder="https://www.zachleat.com/web/…" autocomplete="off" spellcheck="false">
+			</div>
+			<div class="field">
+				<label for="f-post-label">Blog post link text</label>
+				<input type="text" id="f-post-label" name="postLabel" value="Blog post" autocomplete="off">
+			</div>
+			<div class="field">
+				<label for="f-radius">Icon shape</label>
+				<select id="f-radius" name="radius">
+					<option value="">Round avatar, soft icons</option>
+					<option value="50%">All circles</option>
+					<option value="0.25em">All soft corners</option>
+					<option value="0">All squares</option>
+				</select>
+			</div>
+			<div class="field">
+				<label for="f-prefix">Ultra-minify prefix <span class="hint">empty keeps the full class names</span></label>
+				<input type="text" id="f-prefix" name="prefix" value="" placeholder="zn" maxlength="16" autocomplete="off" spellcheck="false">
+			</div>
+			<div class="field field-wide checkboxes">
+				<label class="check"><input type="checkbox" id="f-icons" name="icons" checked> Icons</label>
+				<label class="check"><input type="checkbox" id="f-skip" name="skip" checked> Skip link</label>
+				<label class="check"><input type="checkbox" id="f-sticky" name="sticky" checked> Sticky <span class="hint">on tall viewports</span></label>
+			</div>
+		</form>
+
+		<h3 class="sub">Preview</h3>
+		<div class="example" id="preview"></div>
+
+		<div class="snippets">
+			<div class="snippet">
+				<div class="snippet-head">
+					<h3 class="snippet-title">Markup <span class="size" id="output-size"></span></h3>
+					<button class="btn copy" type="button" aria-live="polite">Copy</button>
+				</div>
+				<pre><code id="output"></code></pre>
+			</div>
+		</div>
+	</section>

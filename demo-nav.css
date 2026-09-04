@@ -1,0 +1,237 @@
+/* zachleat demo nav — a self-contained header for demo pages.
+
+   Deliberately locked down: the nav drops every author style it could inherit
+   from the host page, then styles the handful of elements it uses explicitly.
+   That way it looks the same pasted into a demo with a CSS reset, a demo with
+   Bootstrap, or a demo with no styles at all.
+
+   Custom properties are never touched by `all`, so reskinning still works —
+   override any --demo-nav-* below on .demo-nav or :root.
+
+   Colors and type mirror zachleat.com. Icons come from the IndieWeb Avatar
+   service: https://www.11ty.dev/docs/services/indieweb-avatar/ */
+
+.demo-nav {
+	/* 1. Wipe author declarations from the page, inherited ones included, so
+	      no font, color, spacing or text treatment leaks in. */
+	all: initial;
+
+	/* 2. Theme. */
+	--demo-nav-bg: light-dark(rgba(244, 246, 244, 0.85), rgba(30, 32, 30, 0.85));
+	--demo-nav-bg-solid: light-dark(#fff, #1b1b1b);
+	--demo-nav-text: light-dark(#222, #f2f2f2);
+	--demo-nav-muted: light-dark(#525252, #a9a9a9);
+	--demo-nav-border: light-dark(#d2ded2, #2f3a2f);
+	--demo-nav-green: light-dark(#4caf50, #6cc470);
+	--demo-nav-primary: light-dark(#3c603c, #9ccf9f);
+	--demo-nav-accent: light-dark(#f525e9, #ff6df5);
+	--demo-nav-icon-bg: light-dark(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.08));
+	--demo-nav-radius: 0.25em;
+	--demo-nav-font: Lato, Numero, system-ui, -apple-system, sans-serif;
+	--demo-nav-font-mono: Consolas, Monaco, ui-monospace, monospace;
+
+	/* 3. Everything the nav needs, stated outright. Sizes are em, so a page
+	      that sets `html { font-size: 10px }` can't shrink the nav; `all`
+	      already left font-size at the reader's preferred default. */
+	box-sizing: border-box;
+	isolation: isolate;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5em 1.5em;
+	padding: 0.75em clamp(0.75em, 3vw, 1.5em);
+	color-scheme: light dark;
+	background-color: var(--demo-nav-bg);
+	border-block-end: 1px solid var(--demo-nav-border);
+	color: var(--demo-nav-text);
+	font-family: var(--demo-nav-font);
+	line-height: 1.4;
+	text-align: start;
+}
+
+/* Descendants inherit from the nav, never from the page. `display: revert`
+   keeps each element's browser default — list, block, inline — without letting
+   the page's own rules through, and resetting ::before/::after drops any
+   content a page tries to inject. */
+.demo-nav *,
+.demo-nav *::before,
+.demo-nav *::after {
+	all: unset;
+	display: revert;
+	box-sizing: border-box;
+}
+
+/* Links: zachleat.com's treatment — inherit the text color, green underline. */
+.demo-nav a {
+	color: var(--demo-nav-text);
+	cursor: pointer;
+	text-decoration: underline;
+	text-decoration-color: var(--demo-nav-green);
+	text-decoration-thickness: 0.09em;
+	text-underline-offset: 0.2em;
+}
+
+.demo-nav a:hover,
+.demo-nav a:focus,
+.demo-nav a:active {
+	color: var(--demo-nav-green);
+}
+
+.demo-nav a:focus-visible {
+	outline: 2px solid var(--demo-nav-accent);
+	outline-offset: 3px;
+	border-radius: var(--demo-nav-radius);
+}
+
+/* Sticky by default, but only on a viewport tall enough to spare the room —
+   on a short one (a phone in landscape, a small embedded frame) a pinned bar
+   eats too much of the demo. The blur keeps the translucent background
+   legible over whatever scrolls beneath it. */
+@media (min-height: 30em) {
+	.demo-nav {
+		position: sticky;
+		top: 0;
+		z-index: 1;
+	}
+
+	@supports (backdrop-filter: blur(1px)) {
+		.demo-nav {
+			backdrop-filter: saturate(180%) blur(10px);
+		}
+	}
+}
+
+/* Opt out: scrolls away with the page. */
+.demo-nav.demo-nav-static {
+	position: static;
+}
+
+/* Icons */
+/* --demo-nav-icon-radius is unset by default, which leaves the link icons
+   lightly rounded and the identity avatar circular. Setting it once squares
+   or rounds every icon together. */
+.demo-nav .demo-nav-icon {
+	display: block;
+	flex-shrink: 0;
+	width: 1.15em;
+	height: 1.15em;
+	border-radius: var(--demo-nav-icon-radius, var(--demo-nav-radius));
+	background-color: var(--demo-nav-icon-bg);
+	object-fit: contain;
+	overflow: hidden;
+}
+
+/* Home / identity */
+.demo-nav .demo-nav-home {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4em;
+	flex-shrink: 0;
+	color: var(--demo-nav-primary);
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.demo-nav .demo-nav-home:hover {
+	color: var(--demo-nav-green);
+	text-decoration: underline;
+	text-decoration-color: currentColor;
+	text-underline-offset: 0.2em;
+}
+
+.demo-nav .demo-nav-suffix {
+	color: var(--demo-nav-muted);
+	font-weight: 400;
+}
+
+.demo-nav .demo-nav-home .demo-nav-icon {
+	width: 1.6em;
+	height: 1.6em;
+	border-radius: var(--demo-nav-icon-radius, 50%);
+}
+
+/* Title + description */
+.demo-nav .demo-nav-heading {
+	flex: 1 1 12em;
+	min-width: 0;
+}
+
+.demo-nav .demo-nav-title {
+	display: block;
+	margin: 0;
+	color: var(--demo-nav-text);
+	font-size: 1em;
+	font-weight: 700;
+	line-height: 1.3;
+}
+
+.demo-nav .demo-nav-description {
+	display: block;
+	margin: 0;
+	color: var(--demo-nav-muted);
+	font-size: 0.8125em;
+	text-wrap: pretty;
+}
+
+/* Links: a labelled nav landmark holding plain anchors. Margin and padding
+   come out at zero from the descendant reset above. */
+.demo-nav .demo-nav-links {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.25em 1em;
+	margin-inline-start: auto;
+	font-size: 0.875em;
+}
+
+.demo-nav .demo-nav-links a {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4em;
+}
+
+.demo-nav .demo-nav-code {
+	font-family: var(--demo-nav-font-mono);
+	font-size: 0.9em;
+}
+
+/* Skip link: hidden until keyboard focus. */
+.demo-nav .demo-nav-skip {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+.demo-nav .demo-nav-skip:focus-visible {
+	position: static;
+	width: auto;
+	height: auto;
+	margin: 0;
+	padding: 0.25em 0.5em;
+	overflow: visible;
+	clip-path: none;
+	background-color: var(--demo-nav-bg-solid);
+}
+
+@media (max-width: 30em) {
+	.demo-nav .demo-nav-links {
+		margin-inline-start: 0;
+		flex-basis: 100%;
+	}
+}
+
+@media print {
+	.demo-nav {
+		border-block-end-width: 0;
+	}
+
+	.demo-nav .demo-nav-links,
+	.demo-nav .demo-nav-skip {
+		display: none;
+	}
+}

@@ -1,0 +1,14 @@
+{
+	"name": "zachleat-demo-nav",
+	"version": "1.0.0",
+	"description": "A unified header for zachleat.com demo pages.",
+	"is-this-still-being-maintained": true,
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"build": "node build.js"
+	},
+	"devDependencies": {
+		"lightningcss": "^1.33.0"
+	}
+}

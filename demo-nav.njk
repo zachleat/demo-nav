@@ -1,0 +1,82 @@
+{#-
+  zachleat demo nav — Nunjucks include.
+
+  Usage:  {% include "demo-nav.njk" %}
+
+  Icons come from the IndieWeb Avatar service, which reads each link target's
+  own favicon: https://www.11ty.dev/docs/services/indieweb-avatar/
+
+  Reads these from page data / front matter (all optional):
+    title                  Demo title shown in the nav.
+    description            One-line description under the title.
+    demoUrl                URL of the demo itself, when the nav is not on it.
+    demoLabel              Text for that link.                (default: Demo)
+    demoSource             URL to this demo's source repo.
+    demoNpm                npm package name; adds "npm" and "npmx" links.
+    demoNpmUrl             Override the npmjs.com URL.
+    demoNpmxUrl            Override the npmx.dev URL.
+    demoNpmIconUrl         Icon source for the npm link.      (default: docs.npmjs.com)
+    demoPost               URL of the blog post this demo came from.
+    demoPostLabel          Text for that link.                (default: Blog post)
+    demoHome               URL for the identity link.         (default: zachleat.com)
+    demoHomeLabel          Text for the identity link.        (default: zachleat)
+    demoHomeText           Home link template; {name} is demoHomeLabel and the
+                           rest renders muted.                (default: {name} Demo)
+    demoProjectsUrl        URL for the "All Projects" link.   (default: zachleat.com/projects/)
+    demoNavIcons           false to drop every icon.          (default: true)
+    demoNavHeadingTag      Heading element for the title.     (default: h1)
+    demoNavIconRadius      Border radius for every icon, e.g. 50% or 0. Unset
+                           leaves a round avatar and softly rounded icons.
+    demoNavStatic          true to let the nav scroll away (it is sticky by default
+                           on viewports at least 30em tall).
+    demoNavSkipTarget      Fragment for the skip link.        (default: #demo)
+-#}
+{#- iconUrl overrides where the avatar is read from, when a site blocks the service. -#}
+{%- macro demoNavIcon(url, size = 24, iconUrl = false) -%}
+{%- if demoNavIcons != false %}<img class="demo-nav-icon" src="https://v1.indieweb-avatar.11ty.dev/{{ (iconUrl or url) | urlencode }}/" alt="" width="{{ size }}" height="{{ size }}" decoding="async">{% endif -%}
+{%- endmacro -%}
+<!-- {{ demoHomeLabel or "zachleat" }} nav -->
+<style>{% include "demo-nav.css" %}</style>
+{%- set headingTag = demoNavHeadingTag or "h1" -%}
+{%- set homeName = demoHomeLabel or "zachleat" -%}
+{#- Escape the template first, then swap {name} for the unmuted name. -#}
+{%- set homeSplit = "</span>" + (homeName | escape) + '<span class="demo-nav-suffix">' -%}
+{%- set homeMarkup = (demoHomeText | default("{name} Demo") | escape | replace("{name}", homeSplit)) -%}
+{%- set homeUrl = demoHome or "https://www.zachleat.com/" -%}
+{%- set projectsUrl = demoProjectsUrl or "https://www.zachleat.com/projects/" -%}
+{%- set npmUrl = demoNpmUrl or ("https://www.npmjs.com/package/" + demoNpm) -%}
+{%- set npmxUrl = demoNpmxUrl or ("https://npmx.dev/package/" + demoNpm) -%}
+{#- npmjs.com blocks the avatar service, so read npm's mark from the docs site. -#}
+{%- set npmIconUrl = demoNpmIconUrl or "https://docs.npmjs.com/" -%}
+<header class="demo-nav{% if demoNavStatic %} demo-nav-static{% endif %}"{% if demoNavIconRadius %} style="--demo-nav-icon-radius:{{ demoNavIconRadius }}"{% endif %}>
+	<a class="demo-nav-skip" href="{{ demoNavSkipTarget or '#demo' }}">Skip to the demo</a>
+	<a class="demo-nav-home" href="{{ homeUrl }}">
+		{{ demoNavIcon(homeUrl, 48) }}
+		<span><span class="demo-nav-suffix">{{ homeMarkup | safe }}</span></span>
+	</a>
+	{%- if title %}
+	<div class="demo-nav-heading">
+		<{{ headingTag }} class="demo-nav-title">{{ title }}</{{ headingTag }}>
+		{%- if description %}
+		<p class="demo-nav-description">{{ description }}</p>
+		{%- endif %}
+	</div>
+	{%- endif %}
+	<nav class="demo-nav-links" aria-label="Demo links">
+		{%- if demoUrl %}
+		<a href="{{ demoUrl }}">{{ demoNavIcon(demoUrl) }}{{ demoLabel or "Demo" }}</a>
+		{%- endif %}
+		{%- if demoSource %}
+		<a href="{{ demoSource }}">{{ demoNavIcon(demoSource) }}Source</a>
+		{%- endif %}
+		{%- if demoNpm %}
+		<a href="{{ npmUrl }}">{{ demoNavIcon(npmUrl, 24, npmIconUrl) }}<code class="demo-nav-code">{{ demoNpm }}</code> on npm</a>
+		<a href="{{ npmxUrl }}">{{ demoNavIcon(npmxUrl) }}npmx</a>
+		{%- endif %}
+		{%- if demoPost %}
+		<a href="{{ demoPost }}">{{ demoNavIcon(demoPost) }}{{ demoPostLabel or "Blog post" }}</a>
+		{%- endif %}
+		<a href="{{ projectsUrl }}">{{ demoNavIcon(projectsUrl) }}All Projects</a>
+	</nav>
+</header>
+<!-- /{{ demoHomeLabel or "zachleat" }} nav -->
