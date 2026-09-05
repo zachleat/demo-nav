@@ -198,7 +198,7 @@ let snippet = nav({
 		[ "Source", "https://github.com/zachleat/demo-repo" ],
 		[ `<code class="demo-nav-code">package-name</code> on npm`, "https://www.npmjs.com/package/package-name", NPM_ICON ],
 		[ "npmx", "https://npmx.dev/package/package-name" ],
-		[ "Blog post", "https://www.zachleat.com/web/blog-post/" ]
+		[ "Blog Post", "https://www.zachleat.com/web/blog-post/" ]
 	]
 });
 
@@ -223,7 +223,7 @@ let SPEEDLIFY = [
 	[ "Source", "https://github.com/zachleat/speedlify" ],
 	[ `<code class="demo-nav-code">speedlify</code> on npm`, "https://www.npmjs.com/package/speedlify", NPM_ICON ],
 	[ "npmx", "https://npmx.dev/package/speedlify" ],
-	[ "Blog post", "https://www.zachleat.com/web/speedlify/" ]
+	[ "Blog Post", "https://www.zachleat.com/web/speedlify/" ]
 ];
 
 let samples = [

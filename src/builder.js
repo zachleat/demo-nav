@@ -15,7 +15,7 @@ const AVATAR = "https://v1.indieweb-avatar.11ty.dev/";
 
 	// Bump this when fields are added or their defaults change, so state saved
 	// by an older build can't restore itself over the new defaults.
-	const STORAGE_KEY = "zachleat-demo-nav-builder-5";
+	const STORAGE_KEY = "zachleat-demo-nav-builder-6";
 
 	// Read and write every named field generically, so adding a field to the
 	// form is enough — nothing here needs to know the field names.
@@ -181,7 +181,7 @@ const AVATAR = "https://v1.indieweb-avatar.11ty.dev/";
 			links.push([ "npmx", `https://npmx.dev/package/${encodeURIComponent(data.npm)}`, null ]);
 		}
 		if(data.post) {
-			links.push([ escapeHtml(data.postLabel || "Blog post"), data.post, null ]);
+			links.push([ escapeHtml(data.postLabel || "Blog Post"), data.post, null ]);
 		}
 		links.push([ profile.trailingLabel, profile.trailingUrl, null ]);
 

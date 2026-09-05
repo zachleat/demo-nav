@@ -18,7 +18,7 @@
     demoNpmxUrl            Override the npmx.dev URL.
     demoNpmIconUrl         Icon source for the npm link.      (default: docs.npmjs.com)
     demoPost               URL of the blog post this demo came from.
-    demoPostLabel          Text for that link.                (default: Blog post)
+    demoPostLabel          Text for that link.                (default: Blog Post)
     demoHome               URL for the identity link.         (default: zachleat.com)
     demoHomeLabel          Text for the identity link.        (default: zachleat)
     demoHomeText           Home link template; {name} is demoHomeLabel and the
@@ -75,7 +75,7 @@
 		<a href="{{ npmxUrl }}">{{ demoNavIcon(npmxUrl) }}npmx</a>
 		{%- endif %}
 		{%- if demoPost %}
-		<a href="{{ demoPost }}">{{ demoNavIcon(demoPost) }}{{ demoPostLabel or "Blog post" }}</a>
+		<a href="{{ demoPost }}">{{ demoNavIcon(demoPost) }}{{ demoPostLabel or "Blog Post" }}</a>
 		{%- endif %}
 		<a href="{{ projectsUrl }}">{{ demoNavIcon(projectsUrl) }}All Projects</a>
 	</nav>
