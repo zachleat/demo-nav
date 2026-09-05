@@ -17,7 +17,7 @@
 	all: initial;
 
 	/* 2. Theme. */
-	--demo-nav-bg: light-dark(rgba(244, 246, 244, 0.85), rgba(30, 32, 30, 0.85));
+	--demo-nav-bg: light-dark(rgba(244, 246, 244, 0.7), rgba(30, 32, 30, 0.7));
 	--demo-nav-bg-solid: light-dark(#fff, #1b1b1b);
 	--demo-nav-text: light-dark(#222, #f2f2f2);
 	--demo-nav-muted: light-dark(#525252, #a9a9a9);

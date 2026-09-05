@@ -9,10 +9,13 @@ const AVATAR = "https://v1.indieweb-avatar.11ty.dev/";
 	let output = document.getElementById("output");
 	let ultraStyle = document.getElementById("ultra-css");
 	let outputSize = document.getElementById("output-size");
-	let resetButton = document.getElementById("reset");
+	let profileSelect = document.getElementById("f-profile");
+	let homeUrlField = document.getElementById("f-home-url");
 	let encoder = new TextEncoder();
 
-	const STORAGE_KEY = "zachleat-demo-nav-builder";
+	// Bump this when fields are added or their defaults change, so state saved
+	// by an older build can't restore itself over the new defaults.
+	const STORAGE_KEY = "zachleat-demo-nav-builder-5";
 
 	// Read and write every named field generically, so adding a field to the
 	// form is enough — nothing here needs to know the field names.
@@ -97,7 +100,7 @@ const AVATAR = "https://v1.indieweb-avatar.11ty.dev/";
 	// The home link text is a template: {name} stands in for the profile name, and
 	// everything around it is muted.
 	function homeText(profile, template) {
-		let text = template || "{name}";
+		let text = template || "{name} Demo";
 		if(!text.includes("{name}")) {
 			return escapeHtml(text);
 		}
@@ -105,6 +108,15 @@ const AVATAR = "https://v1.indieweb-avatar.11ty.dev/";
 			.split("{name}")
 			.map(part => part ? `<span class="${c("demo-nav-suffix")}">${escapeHtml(part)}</span>` : "")
 			.join(escapeHtml(profile.label));
+	}
+
+	function profileFor(key) {
+		return PROFILES[key] || PROFILES[DEFAULT_PROFILE];
+	}
+
+	// Picking a profile fills in the home URL, which stays editable after.
+	function syncHomeUrl() {
+		homeUrlField.value = profileFor(profileSelect.value).home;
 	}
 
 	function comments(profile) {
@@ -130,7 +142,8 @@ const AVATAR = "https://v1.indieweb-avatar.11ty.dev/";
 
 	function buildNav(data) {
 		let icons = data.icons;
-		let profile = PROFILES[data.profile] || PROFILES[DEFAULT_PROFILE];
+		let profile = profileFor(data.profile);
+		let home = data.homeUrl || profile.home;
 		let lines = [];
 		let style = data.radius ? ` style="${prop("--demo-nav-icon-radius")}:${data.radius}"` : "";
 		lines.push(`<header class="${c("demo-nav")}${data.sticky ? "" : " " + c("demo-nav-static")}"${style}>`);
@@ -139,9 +152,9 @@ const AVATAR = "https://v1.indieweb-avatar.11ty.dev/";
 			lines.push(`\t<a class="${c("demo-nav-skip")}" href="#demo">Skip to the demo</a>`);
 		}
 
-		lines.push(`\t<a class="${c("demo-nav-home")}" href="${profile.home}">`);
+		lines.push(`\t<a class="${c("demo-nav-home")}" href="${escapeHtml(home)}">`);
 		if(icons) {
-			lines.push(`\t\t${icon(profile.home, 48, icons)}`);
+			lines.push(`\t\t${icon(home, 48, icons)}`);
 		}
 		lines.push(`\t\t<span>${homeText(profile, data.homeText)}</span>`);
 		lines.push(`\t</a>`);
@@ -160,7 +173,7 @@ const AVATAR = "https://v1.indieweb-avatar.11ty.dev/";
 			links.push([ escapeHtml(data.demoLabel || "Demo"), data.demo, null ]);
 		}
 		if(data.source) {
-			links.push([ "Source", data.source, null ]);
+			links.push([ escapeHtml(data.sourceLabel || "Source"), data.source, null ]);
 		}
 		if(data.npm) {
 			let pkg = escapeHtml(data.npm);
@@ -186,6 +199,7 @@ const AVATAR = "https://v1.indieweb-avatar.11ty.dev/";
 		let form_data = new FormData(form);
 		let data = {
 			profile: form_data.get("profile"),
+			homeUrl: (form_data.get("homeUrl") || "").trim(),
 			homeText: form_data.get("homeText") || "",
 			title: (form_data.get("title") || "").trim(),
 			description: (form_data.get("description") || "").trim(),
@@ -193,6 +207,7 @@ const AVATAR = "https://v1.indieweb-avatar.11ty.dev/";
 			demo: (form_data.get("demo") || "").trim(),
 			demoLabel: (form_data.get("demoLabel") || "").trim(),
 			source: (form_data.get("source") || "").trim(),
+			sourceLabel: (form_data.get("sourceLabel") || "").trim(),
 			npm: (form_data.get("npm") || "").trim(),
 			post: (form_data.get("post") || "").trim(),
 			postLabel: (form_data.get("postLabel") || "").trim(),
@@ -215,28 +230,40 @@ const AVATAR = "https://v1.indieweb-avatar.11ty.dev/";
 		// the preview needs the renamed one alongside it to render at all.
 		ultraStyle.textContent = data.prefix ? css : "";
 
-		let [ commentStart, commentEnd ] = comments(PROFILES[data.profile] || PROFILES[DEFAULT_PROFILE]);
+		let [ commentStart, commentEnd ] = comments(profileFor(data.profile));
 		let full = commentStart + "\n<style>\n" + css + "\n</style>\n" + markup + "\n" + commentEnd;
 		output.textContent = full;
 		// Bytes, not characters — the banner comment has an em dash in it.
 		outputSize.textContent = encoder.encode(full).length.toLocaleString() + " bytes";
 	}
 
+	// Attached to the select, so it runs before the form's own input handler
+	// and render() sees the new URL.
+	profileSelect.addEventListener("input", syncHomeUrl);
+
 	form.addEventListener("input", function() {
 		save();
 		render();
 	});
 
-	resetButton.addEventListener("click", function() {
+	// A plain type="reset" button does the reverting; this just clears the
+	// saved copy and redraws. The reset event fires before the fields revert,
+	// so the redraw waits a tick.
+	form.addEventListener("reset", function() {
 		try {
 			localStorage.removeItem(STORAGE_KEY);
 		} catch(e) {}
 
-		form.reset();
-		render();
+		setTimeout(function() {
+			syncHomeUrl();
+			render();
+		}, 0);
 	});
 
 	restore();
+	if(!homeUrlField.value) {
+		syncHomeUrl();
+	}
 	render();
 
 	document.addEventListener("click", async function(event) {

@@ -12,6 +12,7 @@
     demoUrl                URL of the demo itself, when the nav is not on it.
     demoLabel              Text for that link.                (default: Demo)
     demoSource             URL to this demo's source repo.
+    demoSourceLabel        Text for that link.                (default: Source)
     demoNpm                npm package name; adds "npm" and "npmx" links.
     demoNpmUrl             Override the npmjs.com URL.
     demoNpmxUrl            Override the npmx.dev URL.
@@ -67,7 +68,7 @@
 		<a href="{{ demoUrl }}">{{ demoNavIcon(demoUrl) }}{{ demoLabel or "Demo" }}</a>
 		{%- endif %}
 		{%- if demoSource %}
-		<a href="{{ demoSource }}">{{ demoNavIcon(demoSource) }}Source</a>
+		<a href="{{ demoSource }}">{{ demoNavIcon(demoSource) }}{{ demoSourceLabel or "Source" }}</a>
 		{%- endif %}
 		{%- if demoNpm %}
 		<a href="{{ npmUrl }}">{{ demoNavIcon(npmUrl, 24, npmIconUrl) }}<code class="demo-nav-code">{{ demoNpm }}</code> on npm</a>
