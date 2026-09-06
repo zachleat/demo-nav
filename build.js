@@ -248,7 +248,8 @@ let samples = [
 let top = nav({
 	title: "Unified demo nav",
 	description: "A reusable header for zachleat.com demo pages.",
-	links: [ [ "Source", "https://github.com/zachleat/zachleat-demo-nav" ] ]
+	links: [ [ "Source", "https://github.com/zachleat/zachleat-demo-nav" ] ],
+	isStatic: true
 });
 top.splice(1, 0, `\t<a class="demo-nav-skip" href="#builder">Skip to the builder</a>`);
 
