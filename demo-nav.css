@@ -173,13 +173,14 @@
 	text-wrap: pretty;
 }
 
-/* Links: a labelled nav landmark holding plain anchors. Margin and padding
-   come out at zero from the descendant reset above. */
+/* Capped width so the links wrap into rows instead of crowding the heading. */
 .demo-nav .demo-nav-links {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
+	justify-content: flex-end;
 	gap: 0.25em 1em;
+	max-width: 24em;
 	margin-inline-start: auto;
 	font-size: 0.875em;
 }
@@ -220,6 +221,8 @@
 
 @media (max-width: 30em) {
 	.demo-nav .demo-nav-links {
+		justify-content: flex-start;
+		max-width: none;
 		margin-inline-start: 0;
 		flex-basis: 100%;
 	}
