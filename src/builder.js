@@ -272,7 +272,7 @@ const AVATAR = "https://v1.indieweb-avatar.11ty.dev/";
 	}
 
 	function projectTitle(project) {
-		return projectName(project) + (project.isWebComponent ? " Web Component" : "");
+		return project.isWebComponent ? `<${projectName(project)}> Web Component` : projectName(project);
 	}
 
 	function hostOf(url) {
