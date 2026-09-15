@@ -260,6 +260,81 @@ const AVATAR = "https://v1.indieweb-avatar.11ty.dev/";
 		}, 0);
 	});
 
+	const REPORT_URL = "https://zachleat.github.io/is-this-still-being-maintained/report.json";
+	let projectSelect = document.getElementById("f-project");
+	let projects = [];
+
+	function projectName(project) {
+		if(project.isWebComponent && project.packageName) {
+			return project.packageName.split("/").pop();
+		}
+		return project.workspacePath && project.packageName ? project.packageName : project.nameWithOwner.split("/")[1];
+	}
+
+	function projectTitle(project) {
+		return projectName(project) + (project.isWebComponent ? " Web Component" : "");
+	}
+
+	function hostOf(url) {
+		try {
+			return new URL(url).hostname.replace(/^www\./, "");
+		} catch(e) {
+			return "";
+		}
+	}
+
+	function setField(name, value) {
+		form.elements[name].value = value;
+	}
+
+	function applyProject(project) {
+		let host = hostOf(project.homepageUrl);
+		let profile = project.owner !== "11ty" ? "zachleat" : host === "build.awesome.me" ? "buildawesome" : "eleventy";
+		let isPost = host === "zachleat.com" && new URL(project.homepageUrl).pathname.startsWith("/web/");
+
+		profileSelect.value = profile;
+		syncHomeUrl();
+		setField("title", projectTitle(project));
+		setField("description", project.description || "");
+		setField("source", project.url + (project.workspacePath ? `/tree/HEAD/${project.workspacePath}` : ""));
+		setField("npm", project.npmStatus === "published" ? project.packageName : "");
+		setField("post", isPost ? project.homepageUrl : "");
+		// A project's homepage is usually the demo page this nav goes on, so it isn't used as the Demo link.
+		setField("demo", "");
+	}
+
+	projectSelect.addEventListener("change", function() {
+		let project = projects[projectSelect.value];
+		if(project) {
+			applyProject(project);
+			save();
+			render();
+		}
+	});
+
+	fetch(REPORT_URL).then(response => response.json()).then(function(report) {
+		projects = report.projects;
+		let groups = new Map();
+		for(let [ index, project ] of projects.entries()) {
+			let label = projectName(project) + (project.isArchived ? " (archived)" : "");
+			if(!groups.has(project.owner)) {
+				groups.set(project.owner, []);
+			}
+			groups.get(project.owner).push(new Option(label, index));
+		}
+
+		projectSelect.replaceChildren(new Option("Choose a project…", ""));
+		for(let [ owner, options ] of [ ...groups ].sort((a, b) => a[0].localeCompare(b[0]))) {
+			let group = document.createElement("optgroup");
+			group.label = owner;
+			group.append(...options.sort((a, b) => a.text.localeCompare(b.text)));
+			projectSelect.append(group);
+		}
+		projectSelect.disabled = false;
+	}).catch(function() {
+		projectSelect.replaceChildren(new Option("Couldn’t load projects", ""));
+	});
+
 	restore();
 	if(!homeUrlField.value) {
 		syncHomeUrl();
